@@ -1,3 +1,4 @@
+import { act } from 'react';
 import { CLEAR_CART, REMOVE, INCREASE, DECREASE, LOADING, DISPLAY_ITEMS } from './actions';
 
 //Reducer
@@ -44,6 +45,16 @@ const reducer = (state, action) => {
         const newItem = {...item, amount: item.amount - 1};
         newCart.set(itemId, newItem);
         return {...state, cart: newCart};
+    } 
+    //Loading
+    else if (action.type === LOADING)
+    {
+        return {...state, loading: true};
+    } 
+    else if(action.type === DISPLAY_ITEMS)
+    {
+        const newCart = new Map(action.payload.cart.map((item) => [item.id, item]));
+        return {...state, loading: false, cart: newCart};
     }
     //Throw no matching type exception
    throw new Error(`no matching type : ${action.type}`);

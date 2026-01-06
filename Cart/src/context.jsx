@@ -7,13 +7,16 @@ import cartItems from './data';
 import { CLEAR_CART, REMOVE, INCREASE, DECREASE, LOADING, DISPLAY_ITEMS } from './actions';
 import { getTotals } from './utils';
 
+//url for data fetching
+const url = 'https://www.course-api.com/react-useReducer-cart-project';
+
 //Invoking the create context method
 const AppContext = createContext();
 
 //Initial State
 const InitialState = {
     loading: false,
-    cart: new Map(cartItems.map((item) => [item.id, item])),
+    cart: new Map(),
 };
 
 export const AppProvider = ({children}) => {
@@ -45,6 +48,18 @@ export const AppProvider = ({children}) => {
         dispatch({type: DECREASE, payload: {id}});
     };
 
+    //function for fetching data
+    const fetchData = async() =>
+    {
+        dispatch({type: LOADING});
+        const response = await fetch(url);
+        const cart = await response.json();
+        dispatch({type: DISPLAY_ITEMS, payload: {cart}});
+    };
+    //invoking the fetch data method inside the useEffect
+    useEffect(() => {
+        fetchData();
+    }, []);
     //Return statement to provide the context
     return (
     <AppContext.Provider value={{...state, clearCart, removeItem, increase, decrease, totalAmount, totalCost}}>

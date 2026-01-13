@@ -230,6 +230,7 @@ const { mutate: createTask, isLoading } = useMutation({
   mutationFn: (taskTitle) => customFetch.post('/', { title: taskTitle }),
   onSuccess: () => {
     // do something
+    queryClient.invalidateQueries(['posts']);
   },
   onError: () => {
     // do something

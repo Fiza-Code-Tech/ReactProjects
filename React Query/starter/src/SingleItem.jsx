@@ -1,10 +1,18 @@
+import {useMutation, useQueryClient} from '@tanstack/react-query';
+import instance from './utils';
+import { useDeleteTask, useEditTask } from './reactQueryCustomHooks';
+
 const SingleItem = ({ item }) => {
+  
+  const {editTask} = useEditTask();
+  const {del, isPending} = useDeleteTask();
+  
   return (
     <div className='single-item'>
       <input
         type='checkbox'
         checked={item.isDone}
-        onChange={() => console.log('edit task')}
+        onChange={() => editTask({taskId: item.id, isDone: !item.isDone})}
       />
       <p
         style={{
@@ -16,8 +24,9 @@ const SingleItem = ({ item }) => {
       </p>
       <button
         className='btn remove-btn'
+        disabled={isPending}
         type='button'
-        onClick={() => console.log('delete task')}
+        onClick={() => del(item.id)}
       >
         delete
       </button>

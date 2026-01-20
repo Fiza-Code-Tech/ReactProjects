@@ -25,7 +25,6 @@ const Error = () => {
       </div>
     </Wrapper>
   );
-  return <div>Error</div>;
 };
 
 export default Error;

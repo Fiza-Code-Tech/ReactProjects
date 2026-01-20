@@ -60,8 +60,7 @@ const client = createClient({
   accessToken: import.meta.env.VITE_API_KEY,
 });
 
-client
-  .getEntries({ content_type: 'projects' })
+ '
   .then((response) => console.log(response.items))
   .catch(console.error);
 ```

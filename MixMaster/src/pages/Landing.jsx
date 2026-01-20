@@ -4,12 +4,24 @@ const cocktailSearchUrl =
   'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
 import SearchForm from '../components/SearchForm';
 import CocktailList from '../components/CocktailList';
-const Landing = () => {
-  const { drinks, searchTerm } = useLoaderData();
+import { useQuery } from '@tanstack/react-query';
 
+const searchCocktailsQuery = (searchTerm) => {
+  return {
+    queryKey: ['search', searchTerm || 'all'],
+    queryFn: async () => {
+      searchTerm = searchTerm || 'a';
+      const response = await axios(`${cocktailSearchUrl}${searchTerm}`);
+      return response.data.drinks;
+    },
+  };
+};
+const Landing = () => {
+  const { searchTerm } = useLoaderData();
+  const { data: drinks } = useQuery(searchCocktailsQuery(searchTerm));
   return (
     <>
-      <SearchForm />
+      <SearchForm searchTerm={searchTerm} />
       <CocktailList drinks={drinks} />
     </>
   );
@@ -17,8 +29,11 @@ const Landing = () => {
 
 export default Landing;
 
-export const loader = async () => {
-  const searchTerm = 'margarita';
-  const response = await axios(`${cocktailSearchUrl}${searchTerm}`);
-  return { drinks: response.data.drinks, searchTerm };
-};
+export const loader =
+  (queryClient) =>
+  async ({ request }) => {
+    const url = new URL(request.url);
+    const searchTerm = url.searchParams.get('search') || '';
+    await queryClient.ensureQueryData(searchCocktailsQuery(searchTerm));
+    return { searchTerm };
+  };

@@ -40,47 +40,7 @@ Component Reusability
 
 Project Structure Best Practices
 
-📂 Folder Structure
-ReactProjects/
-│
-├── project-1/
-├── project-2/
-├── project-3/
-└── ...
-
-
 Each project is independent and can be installed and run separately.
-
-🚀 Projects Included
-1️⃣ Project Name
-
-Description of what it does
-
-Key concepts used
-
-Technologies used
-
-2️⃣ Project Name
-
-Description
-
-Key concepts
-
-(Add more as needed)
-
-🛠️ Tech Stack
-
-React
-
-Vite
-
-JavaScript (ES6+)
-
-React Router
-
-React Query
-
-CSS / Tailwind CSS
 
 ⚙️ How to Run a Project
 
